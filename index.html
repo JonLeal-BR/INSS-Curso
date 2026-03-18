@@ -2,120 +2,147 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>INSS Estudos</title>
+<title>INSS Master App</title>
 
 <style>
 body {
   font-family: Arial;
   background: #0f172a;
   color: white;
-  margin: 0;
-}
-
-header {
-  background: #020617;
-  padding: 15px;
   text-align: center;
-  font-size: 20px;
-}
-
-.container {
   padding: 20px;
 }
 
 button {
-  width: 100%;
   padding: 15px;
-  margin: 10px 0;
-  border: none;
+  margin: 10px;
   border-radius: 10px;
+  border: none;
   font-size: 16px;
 }
 
+.menu button { background: #1e293b; color: white; }
 .certo { background: green; }
 .errado { background: red; }
 
-.menu button {
-  background: #1e293b;
-  color: white;
-}
-
 .hidden { display: none; }
+
 </style>
 </head>
 
 <body>
 
-<header>📚 INSS Estudos</header>
+<h1>📚 INSS MASTER</h1>
 
-<div class="container">
-
-<!-- MENU -->
 <div id="menu" class="menu">
-  <h2>Escolha</h2>
-  <button onclick="start()">▶ Iniciar Simulado</button>
+  <h2>Escolha a Matéria</h2>
+  <button onclick="iniciar('portugues')">Português</button>
+  <button onclick="iniciar('previdenciario')">Previdenciário</button>
+  <button onclick="iniciar('informatica')">Informática</button>
+
+  <h2>Simulado</h2>
+  <button onclick="simulado(1)">🟢 Iniciante</button>
+  <button onclick="simulado(2)">🟡 Intermediário</button>
+  <button onclick="simulado(3)">🔴 Expert</button>
 </div>
 
-<!-- QUIZ -->
 <div id="quiz" class="hidden">
   <h3 id="pergunta"></h3>
-  
-  <button onclick="responder(true)">Verdadeiro</button>
-  <button onclick="responder(false)">Falso</button>
 
-  <p id="resultado"></p>
-  <p id="progresso"></p>
-</div>
+  <button class="certo" onclick="responder(true)">CERTO</button>
+  <button class="errado" onclick="responder(false)">ERRADO</button>
 
+  <p id="feedback"></p>
+  <p id="placar"></p>
+
+  <button onclick="voltar()">⬅ Voltar</button>
 </div>
 
 <script>
-const perguntas = [
-  {texto: "A previdência exige contribuição prévia.", resposta: true},
-  {texto: "Saúde depende de contribuição.", resposta: false},
-  {texto: "Assistência social é contributiva.", resposta: false}
-];
 
-let atual = 0;
-let pontos = 0;
+const banco = {
+  portugues: [
+    {q:"'Houveram problemas' está correto.", r:false},
+    {q:"Crase ocorre antes de palavras femininas.", r:true},
+    {q:"Sujeito simples pode ter mais de um núcleo.", r:false}
+  ],
 
-function start() {
+  previdenciario: [
+    {q:"Previdência exige contribuição.", r:true},
+    {q:"Assistência social é contributiva.", r:false},
+    {q:"Segurado facultativo exerce atividade remunerada.", r:false}
+  ],
+
+  informatica: [
+    {q:"RAM é memória volátil.", r:true},
+    {q:"SSD é mais lento que HD.", r:false},
+    {q:"Sistema operacional gerencia hardware.", r:true}
+  ]
+};
+
+let lista = [];
+let atual;
+let acertos = 0;
+let erros = 0;
+
+function iniciar(materia){
+  lista = banco[materia];
+  start();
+}
+
+function simulado(nivel){
+  lista = [];
+
+  Object.values(banco).forEach(m => {
+    lista = lista.concat(m);
+  });
+
+  if(nivel === 2) lista = lista.concat(lista);
+  if(nivel === 3) lista = lista.concat(lista, lista);
+
+  start();
+}
+
+function start(){
   document.getElementById("menu").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
-  carregar();
+
+  acertos = 0;
+  erros = 0;
+
+  nova();
 }
 
-function carregar() {
-  document.getElementById("pergunta").innerText = perguntas[atual].texto;
-  document.getElementById("resultado").innerText = "";
-  document.getElementById("progresso").innerText =
-    `Questão ${atual+1} de ${perguntas.length}`;
+function nova(){
+  atual = lista[Math.floor(Math.random()*lista.length)];
+  document.getElementById("pergunta").innerText = atual.q;
+  document.getElementById("feedback").innerText = "";
 }
 
-function responder(resp) {
-  if (resp === perguntas[atual].resposta) {
-    pontos++;
-    document.getElementById("resultado").innerText = "✅ Acertou!";
+function responder(resp){
+  if(resp === atual.r){
+    acertos++;
+    document.getElementById("feedback").innerText = "✅ Acertou";
   } else {
-    document.getElementById("resultado").innerText = "❌ Errou!";
+    erros++;
+    document.getElementById("feedback").innerText = "❌ Errou";
   }
 
-  atual++;
+  atualizar();
 
-  setTimeout(() => {
-    if (atual < perguntas.length) {
-      carregar();
-    } else {
-      finalizar();
-    }
-  }, 800);
+  setTimeout(nova, 700);
 }
 
-function finalizar() {
-  document.getElementById("quiz").innerHTML =
-    `<h2>Resultado: ${pontos}/${perguntas.length}</h2>
-     <button onclick="location.reload()">Refazer</button>`;
+function atualizar(){
+  document.getElementById("placar").innerText =
+    `Acertos: ${acertos} | Erros: ${erros}`;
 }
+
+function voltar(){
+  document.getElementById("menu").classList.remove("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+}
+
 </script>
 
 </body>
