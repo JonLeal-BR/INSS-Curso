@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>INSS Estudos</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+}
+
+header {
+  background: #020617;
+  padding: 15px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.container {
+  padding: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.certo { background: green; }
+.errado { background: red; }
+
+.menu button {
+  background: #1e293b;
+  color: white;
+}
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<header>📚 INSS Estudos</header>
+
+<div class="container">
+
+<!-- MENU -->
+<div id="menu" class="menu">
+  <h2>Escolha</h2>
+  <button onclick="start()">▶ Iniciar Simulado</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="hidden">
+  <h3 id="pergunta"></h3>
+  
+  <button onclick="responder(true)">Verdadeiro</button>
+  <button onclick="responder(false)">Falso</button>
+
+  <p id="resultado"></p>
+  <p id="progresso"></p>
+</div>
+
+</div>
+
+<script>
+const perguntas = [
+  {texto: "A previdência exige contribuição prévia.", resposta: true},
+  {texto: "Saúde depende de contribuição.", resposta: false},
+  {texto: "Assistência social é contributiva.", resposta: false}
+];
+
+let atual = 0;
+let pontos = 0;
+
+function start() {
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  carregar();
+}
+
+function carregar() {
+  document.getElementById("pergunta").innerText = perguntas[atual].texto;
+  document.getElementById("resultado").innerText = "";
+  document.getElementById("progresso").innerText =
+    `Questão ${atual+1} de ${perguntas.length}`;
+}
+
+function responder(resp) {
+  if (resp === perguntas[atual].resposta) {
+    pontos++;
+    document.getElementById("resultado").innerText = "✅ Acertou!";
+  } else {
+    document.getElementById("resultado").innerText = "❌ Errou!";
+  }
+
+  atual++;
+
+  setTimeout(() => {
+    if (atual < perguntas.length) {
+      carregar();
+    } else {
+      finalizar();
+    }
+  }, 800);
+}
+
+function finalizar() {
+  document.getElementById("quiz").innerHTML =
+    `<h2>Resultado: ${pontos}/${perguntas.length}</h2>
+     <button onclick="location.reload()">Refazer</button>`;
+}
+</script>
+
+</body>
+</html>
