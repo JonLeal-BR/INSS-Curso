@@ -2,35 +2,15 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>INSS Master App</title>
+<title>INSS Master</title>
 
 <style>
-body {
-  font-family: Arial;
-  background: #0f172a;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-button {
-  padding: 14px;
-  margin: 8px;
-  border-radius: 10px;
-  border: none;
-  font-size: 15px;
-}
-
-.menu button { background: #1e293b; color: white; }
-.certo { background: green; }
-.errado { background: red; }
-
-.hidden { display: none; }
-
-#feedback {
-  margin-top: 15px;
-  font-size: 14px;
-}
+body { font-family: Arial; background:#0f172a; color:white; text-align:center; padding:20px;}
+button { padding:14px; margin:8px; border-radius:10px; border:none;}
+.menu button { background:#1e293b; color:white;}
+.certo { background:green;}
+.errado { background:red;}
+.hidden { display:none;}
 </style>
 </head>
 
@@ -39,180 +19,318 @@ button {
 <h1>📚 INSS MASTER</h1>
 
 <div id="menu" class="menu">
-  <h2>Escolha a Matéria</h2>
-  <button onclick="iniciar('portugues')">Português</button>
-  <button onclick="iniciar('previdenciario')">Previdenciário</button>
-  <button onclick="iniciar('informatica')">Informática</button>
+<h2>📖 Matérias</h2>
+<button onclick="abrirNivel('portugues')">🇧🇷 Português</button>
+<button onclick="abrirNivel('previdenciario')">⚖️ Previdenciário</button>
+<button onclick="abrirNivel('informatica')">💻 Informática</button>
 
-  <h2>Simulado Geral</h2>
-  <button onclick="simulado()">🎯 Iniciar Simulado</button>
+<h2>🎯 Simulado</h2>
+<button onclick="simulado()">🚀 Iniciar</button>
+</div>
+
+<div id="nivel" class="hidden">
+<h2>Escolha o Nível</h2>
+<button onclick="iniciar('basico')">🟢 Básico</button>
+<button onclick="iniciar('intermediario')">🟡 Intermediário</button>
+<button onclick="iniciar('dificil')">🔴 Difícil</button>
+<br><br>
+<button onclick="voltarMenu()">⬅ Voltar</button>
 </div>
 
 <div id="quiz" class="hidden">
-  <h3 id="pergunta"></h3>
-
-  <button class="certo" onclick="responder(true)">CERTO</button>
-  <button class="errado" onclick="responder(false)">ERRADO</button>
-
-  <p id="feedback"></p>
-  <p id="placar"></p>
-
-  <button onclick="voltar()">⬅ Voltar</button>
+<h3 id="pergunta"></h3>
+<button class="certo" onclick="responder(true)">✅ CERTO</button>
+<button class="errado" onclick="responder(false)">❌ ERRADO</button>
+<p id="feedback"></p>
+<p id="placar"></p>
+<button onclick="voltarMenu()">⬅ Menu</button>
 </div>
 
 <script>
 
-// ================= BANCO DE QUESTÕES =================
+let materiaAtual="";
 
-const banco = {
+// ================= PORTUGUÊS (60 QUESTÕES REAIS ADAPTADAS) =================
 
-portugues: [
-{q:"O uso de 'há' pode indicar tempo decorrido.", r:true, c:"Correto. 'Há' indica tempo passado e pode ser substituído por 'faz'."},
-{q:"A crase ocorre antes de palavras masculinas.", r:false, c:"Errado. A crase ocorre antes de palavras femininas que admitem artigo 'a'."},
-{q:"O sujeito pode ser indeterminado.", r:true, c:"Correto. O sujeito indeterminado ocorre quando não se identifica o agente da ação."},
-{q:"Pontuação não altera o sentido da frase.", r:false, c:"Errado. A pontuação pode alterar completamente o sentido."},
-{q:"Verbo 'haver' no sentido de existir vai para o plural.", r:false, c:"Errado. Ele é impessoal e fica no singular."},
-{q:"Predicado verbal indica ação.", r:true, c:"Correto. O núcleo é um verbo significativo."},
-{q:"Adjunto adverbial é essencial.", r:false, c:"Errado. É termo acessório."},
-{q:"Sujeito composto possui mais de um núcleo.", r:true, c:"Correto."},
-{q:"Crase pode ocorrer antes de verbo.", r:false, c:"Errado. Nunca ocorre antes de verbo."},
-{q:"Pronome substitui o nome.", r:true, c:"Correto."},
-{q:"Advérbio modifica verbo.", r:true, c:"Correto."},
-{q:"Interjeição possui função sintática.", r:false, c:"Errado. Não exerce função sintática."},
-{q:"Regência verbal trata da relação entre verbo e complemento.", r:true, c:"Correto."},
-{q:"Objeto direto exige preposição obrigatória.", r:false, c:"Errado."},
-{q:"Concordância verbal depende do sujeito.", r:true, c:"Correto."},
-{q:"Verbo de ligação indica estado.", r:true, c:"Correto."},
-{q:"Artigo define o substantivo.", r:true, c:"Correto."},
-{q:"Substantivo nomeia seres.", r:true, c:"Correto."},
-{q:"Locução verbal tem apenas um verbo.", r:false, c:"Errado. Possui dois ou mais."},
-{q:"Predicado nominal indica estado.", r:true, c:"Correto."}
+const portugues = {
+
+basico: [
+{q:"O acento grave indica a ocorrência de crase.",r:true,c:"✔ Crase = fusão de 'a' + 'a'. Clássico de prova."},
+{q:"O verbo 'haver' no sentido de existir varia no plural.",r:false,c:"❌ 'Haver' é impessoal → sempre singular."},
+{q:"Substantivo nomeia seres.",r:true,c:"✔ Conceito básico e recorrente."},
+{q:"Artigo sempre acompanha o substantivo.",r:false,c:"❌ Pode existir substantivo sem artigo."},
+{q:"Adjetivo caracteriza o substantivo.",r:true,c:"✔ Função básica."},
+{q:"Verbo indica ação ou estado.",r:true,c:"✔ Conceito essencial."},
+{q:"Pronome substitui o nome.",r:true,c:"✔ Base da coesão textual."},
+{q:"Crase ocorre antes de verbo.",r:false,c:"❌ Nunca ocorre antes de verbo."},
+{q:"Advérbio modifica verbo.",r:true,c:"✔ Pode modificar verbo, adjetivo ou outro advérbio."},
+{q:"Preposição liga termos.",r:true,c:"✔ Relação de sentido."},
+{q:"Conjunção liga orações.",r:true,c:"✔ Estrutura sintática."},
+{q:"Interjeição expressa emoção.",r:true,c:"✔ Não exerce função sintática."},
+{q:"Sujeito é sempre explícito.",r:false,c:"❌ Pode ser oculto ou indeterminado."},
+{q:"Predicado contém o verbo.",r:true,c:"✔ Essencial."},
+{q:"Objeto direto exige preposição.",r:false,c:"❌ Não exige."},
+{q:"Objeto indireto exige preposição.",r:true,c:"✔ Regra base."},
+{q:"Locução verbal possui mais de um verbo.",r:true,c:"✔ Correto."},
+{q:"Verbo de ligação indica estado.",r:true,c:"✔ Fundamental."},
+{q:"Pontuação não altera sentido.",r:false,c:"❌ Pode mudar totalmente."},
+{q:"Crase depende de regência.",r:true,c:"✔ Banca ama isso."}
 ],
 
-previdenciario: [
-{q:"A previdência social exige contribuição.", r:true, c:"Correto. É contributiva."},
-{q:"Assistência social exige contribuição.", r:false, c:"Errado. É não contributiva."},
-{q:"Saúde integra a seguridade social.", r:true, c:"Correto."},
-{q:"Segurado facultativo exerce atividade remunerada.", r:false, c:"Errado."},
-{q:"Empregado é segurado obrigatório.", r:true, c:"Correto."},
-{q:"A seguridade é financiada por toda a sociedade.", r:true, c:"Correto."},
-{q:"LOAS exige contribuição prévia.", r:false, c:"Errado."},
-{q:"Aposentadoria é benefício previdenciário.", r:true, c:"Correto."},
-{q:"Auxílio-doença é permanente.", r:false, c:"Errado."},
-{q:"Salário-maternidade é benefício.", r:true, c:"Correto."},
-{q:"Carência é número mínimo de contribuições.", r:true, c:"Correto."},
-{q:"Dependentes não recebem benefícios.", r:false, c:"Errado."},
-{q:"INSS paga benefícios.", r:true, c:"Correto."},
-{q:"Segurado especial contribui mensalmente.", r:false, c:"Errado."},
-{q:"Tempo de contribuição não importa.", r:false, c:"Errado."},
-{q:"Reforma trouxe idade mínima.", r:true, c:"Correto."},
-{q:"Contribuinte individual contribui obrigatoriamente.", r:true, c:"Correto."},
-{q:"Pensão por morte é benefício.", r:true, c:"Correto."},
-{q:"Seguridade é apenas previdência.", r:false, c:"Errado."},
-{q:"INSS é autarquia federal.", r:true, c:"Correto."}
+intermediario: [
+{q:"A concordância verbal depende do sujeito.",r:true,c:"✔ Núcleo do sujeito manda."},
+{q:"Sujeito composto exige verbo no plural.",r:true,c:"✔ Regra geral."},
+{q:"Sujeito posposto sempre leva verbo no plural.",r:false,c:"❌ Pode variar conforme estilo."},
+{q:"Verbo 'fazer' indicando tempo é impessoal.",r:true,c:"✔ Sempre singular."},
+{q:"Regência verbal trata de preposição.",r:true,c:"✔ Relação verbo + complemento."},
+{q:"Crase ocorre antes de palavras masculinas.",r:false,c:"❌ Nunca."},
+{q:"Adjunto adnominal é essencial.",r:false,c:"❌ Termo acessório."},
+{q:"Predicado nominal tem verbo de ligação.",r:true,c:"✔ Correto."},
+{q:"Predicado verbal indica ação.",r:true,c:"✔ Correto."},
+{q:"Objeto direto pode ter preposição.",r:true,c:"✔ Casos especiais (OD preposicionado)."},
+{q:"Verbo transitivo indireto exige complemento sem preposição.",r:false,c:"❌ Sempre com preposição."},
+{q:"Concordância nominal afeta adjetivo.",r:true,c:"✔ Concorda com substantivo."},
+{q:"Crase ocorre em locuções femininas.",r:true,c:"✔ Ex: à noite."},
+{q:"Pronome oblíquo pode ser objeto.",r:true,c:"✔ Função sintática."},
+{q:"Verbo 'ser' concorda com predicativo.",r:true,c:"✔ Regra especial."},
+{q:"Sujeito indeterminado pode usar 'se'.",r:true,c:"✔ Índice de indeterminação."},
+{q:"Partícula 'se' sempre indica reflexividade.",r:false,c:"❌ Pode ter várias funções."},
+{q:"Adjunto adverbial é obrigatório.",r:false,c:"❌ Não é essencial."},
+{q:"Conjunção adversativa indica oposição.",r:true,c:"✔ Ex: mas."},
+{q:"Período composto tem mais de uma oração.",r:true,c:"✔ Correto."}
 ],
 
-informatica: [
-{q:"Memória RAM é volátil.", r:true, c:"Correto."},
-{q:"SSD é mais lento que HD.", r:false, c:"Errado."},
-{q:"CPU executa instruções.", r:true, c:"Correto."},
-{q:"Sistema operacional gerencia hardware.", r:true, c:"Correto."},
-{q:"Backup é desnecessário.", r:false, c:"Errado."},
-{q:"Vírus pode danificar arquivos.", r:true, c:"Correto."},
-{q:"Monitor é dispositivo de entrada.", r:false, c:"Errado."},
-{q:"Teclado é dispositivo de entrada.", r:true, c:"Correto."},
-{q:"Firewall protege sistema.", r:true, c:"Correto."},
-{q:"Antivírus remove malware.", r:true, c:"Correto."},
-{q:"Download envia arquivo.", r:false, c:"Errado."},
-{q:"Upload envia arquivo.", r:true, c:"Correto."},
-{q:"Internet é rede mundial.", r:true, c:"Correto."},
-{q:"Linux é pago obrigatoriamente.", r:false, c:"Errado."},
-{q:"Pen drive é armazenamento.", r:true, c:"Correto."},
-{q:"HD é mais rápido que SSD.", r:false, c:"Errado."},
-{q:"Nuvem é armazenamento remoto.", r:true, c:"Correto."},
-{q:"Mouse é entrada.", r:true, c:"Correto."},
-{q:"Arquivo não pode ser excluído.", r:false, c:"Errado."},
-{q:"Sistema pode ter falhas.", r:true, c:"Correto."}
+dificil: [
+{q:"A crase ocorre em 'àquele'.",r:true,c:"✔ Fusão da preposição + pronome."},
+{q:"'Houveram problemas' está correto.",r:false,c:"❌ Haver impessoal → singular."},
+{q:"'Fazem 2 anos' está correto.",r:false,c:"❌ Faz tempo → singular."},
+{q:"Sujeito oracional leva verbo no singular.",r:true,c:"✔ Regra."},
+{q:"'Mais de um aluno faltou' está correto.",r:true,c:"✔ Regra especial."},
+{q:"'Mais de um aluno faltaram' está correto.",r:false,c:"❌ Erro clássico."},
+{q:"A crase ocorre antes de pronomes pessoais.",r:false,c:"❌ Não ocorre."},
+{q:"'Assistir o filme' está correto.",r:false,c:"❌ Verbo exige preposição (assistir a)."},
+{q:"'Visar o cargo' está correto.",r:true,c:"✔ Sem preposição nesse sentido."},
+{q:"'Visar ao cargo' está correto.",r:false,c:"❌ Nesse contexto está errado."},
+{q:"A regência pode alterar sentido.",r:true,c:"✔ Muito cobrado."},
+{q:"A concordância pode ser ideológica.",r:true,c:"✔ Concordância lógica."},
+{q:"'É proibido entrada' está correto.",r:false,c:"❌ Correto: proibida."},
+{q:"Predicativo do sujeito pode vir após verbo.",r:true,c:"✔ Correto."},
+{q:"Sujeito oculto não existe.",r:false,c:"❌ Existe sim."},
+{q:"Partícula 'se' pode ser apassivadora.",r:true,c:"✔ Muito cobrado."},
+{q:"Voz passiva pode ser sintética.",r:true,c:"✔ Correto."},
+{q:"'Aluga-se casas' está correto.",r:false,c:"❌ Concordância errada."},
+{q:"'Precisa-se de funcionários' está correto.",r:true,c:"✔ Correto."},
+{q:"Regência e crase estão interligadas.",r:true,c:"✔ Essencial pra prova."}
 ]
 
 };
 
-// ================= LÓGICA =================
+// ================= OUTRAS MATÉRIAS (BASE) =================
 
-let listaBase = [];
-let listaAtual = [];
-let atual;
-
-let acertos = 0;
-let erros = 0;
-
-function iniciar(materia){
-  listaBase = [...banco[materia]];
-  preparar();
+function gerar(materia,nivel){
+  let lista=[];
+  for(let i=1;i<=20;i++){
+    lista.push({
+      q:`${materia} ${nivel} - Questão ${i}`,
+      r:Math.random()>0.5,
+      c:"⚠️ Revise o conceito — padrão clássico de cobrança em prova."
+    });
+  }
+  return lista;
 }
 
+const previdenciario = {
+
+basico: [
+{q:"A previdência social é contributiva.",r:true,c:"✔ Regra base: precisa contribuir."},
+{q:"Assistência social exige contribuição.",r:false,c:"❌ Não exige. Cai MUITO."},
+{q:"Saúde faz parte da seguridade social.",r:true,c:"✔ Tripé: saúde, previdência, assistência."},
+{q:"Empregado é segurado facultativo.",r:false,c:"❌ É obrigatório."},
+{q:"Carência é tempo mínimo de contribuição.",r:true,c:"✔ Conceito básico."},
+{q:"INSS é empresa privada.",r:false,c:"❌ É autarquia federal."},
+{q:"Aposentadoria é benefício previdenciário.",r:true,c:"✔ Correto."},
+{q:"Auxílio-doença é vitalício.",r:false,c:"❌ Temporário."},
+{q:"Segurado especial paga mensalmente.",r:false,c:"❌ Regra diferenciada."},
+{q:"Dependentes podem receber benefícios.",r:true,c:"✔ Ex: pensão."},
+{q:"Pensão por morte é benefício.",r:true,c:"✔ Muito cobrado."},
+{q:"LOAS exige contribuição.",r:false,c:"❌ Assistencial."},
+{q:"Seguridade é só previdência.",r:false,c:"❌ Pegadinha clássica."},
+{q:"Contribuinte individual é obrigatório.",r:true,c:"✔ Correto."},
+{q:"Tempo de contribuição é irrelevante.",r:false,c:"❌ Fundamental."},
+{q:"INSS concede benefícios.",r:true,c:"✔ Função principal."},
+{q:"Salário-maternidade é benefício.",r:true,c:"✔ Correto."},
+{q:"Carência sempre é exigida.",r:false,c:"❌ Há exceções."},
+{q:"Segurado facultativo pode contribuir.",r:true,c:"✔ Correto."},
+{q:"Previdência cobre riscos sociais.",r:true,c:"✔ Finalidade."}
+],
+
+intermediario: [
+{q:"Segurado empregado doméstico é obrigatório.",r:true,c:"✔ Correto."},
+{q:"Auxílio-reclusão é pago ao segurado.",r:false,c:"❌ É para dependentes."},
+{q:"Carência pode ser dispensada.",r:true,c:"✔ Ex: acidente."},
+{q:"Pensão por morte exige carência.",r:false,c:"❌ Não exige."},
+{q:"INSS integra a administração indireta.",r:true,c:"✔ Autarquia."},
+{q:"Segurado especial é trabalhador urbano.",r:false,c:"❌ Rural."},
+{q:"Contribuição é obrigatória para todos.",r:false,c:"❌ Facultativo não."},
+{q:"Benefícios são pagos mensalmente.",r:true,c:"✔ Regra geral."},
+{q:"Reforma criou idade mínima.",r:true,c:"✔ Importante."},
+{q:"Segurado pode perder qualidade.",r:true,c:"✔ Regra de manutenção."},
+{q:"Período de graça mantém qualidade.",r:true,c:"✔ Muito cobrado."},
+{q:"Auxílio-doença virou auxílio incapacidade.",r:true,c:"✔ Atualização."},
+{q:"Aposentadoria especial exige exposição.",r:true,c:"✔ Correto."},
+{q:"Contribuinte individual pode não contribuir.",r:false,c:"❌ Obrigatório."},
+{q:"INSS não analisa benefícios.",r:false,c:"❌ Analisa sim."},
+{q:"Dependentes têm ordem de prioridade.",r:true,c:"✔ Classe 1,2,3."},
+{q:"Filho maior sempre perde benefício.",r:true,c:"✔ Regra geral."},
+{q:"Benefícios podem ser acumulados.",r:true,c:"✔ Com regras."},
+{q:"Segurado facultativo tem renda.",r:false,c:"❌ Não exerce atividade."},
+{q:"Carência conta em meses.",r:true,c:"✔ Correto."}
+],
+
+dificil: [
+{q:"Qualidade de segurado pode ser mantida sem contribuição.",r:true,c:"✔ Período de graça."},
+{q:"Aposentadoria exige idade e tempo após reforma.",r:true,c:"✔ Regra geral."},
+{q:"Segurado especial contribui com alíquota fixa.",r:false,c:"❌ Percentual sobre produção."},
+{q:"Auxílio-acidente é indenizatório.",r:true,c:"✔ Não substitui renda."},
+{q:"Pensão pode ser inferior ao salário mínimo.",r:true,c:"✔ Após reforma."},
+{q:"Dependente classe 2 exclui classe 1.",r:false,c:"❌ Classe 1 tem prioridade."},
+{q:"Perda da qualidade exige nova carência total.",r:false,c:"❌ Parcial em alguns casos."},
+{q:"Carência conta dias.",r:false,c:"❌ Conta meses."},
+{q:"INSS pode revisar benefícios.",r:true,c:"✔ Correto."},
+{q:"Segurado facultativo pode ser dependente.",r:true,c:"✔ Pode acumular papéis."},
+{q:"Benefício pode cessar.",r:true,c:"✔ Regra comum."},
+{q:"Auxílio-doença exige incapacidade.",r:true,c:"✔ Correto."},
+{q:"Revisão não tem prazo.",r:false,c:"❌ Tem decadência."},
+{q:"Segurado obrigatório pode ser facultativo.",r:false,c:"❌ Não simultaneamente."},
+{q:"INSS é vinculado ao governo federal.",r:true,c:"✔ Correto."},
+{q:"Aposentadoria especial ignora risco.",r:false,c:"❌ Baseada no risco."},
+{q:"Dependente pode perder direito.",r:true,c:"✔ Ex: casamento."},
+{q:"Contribuição retroativa é livre.",r:false,c:"❌ Tem regras."},
+{q:"Carência pode reiniciar.",r:true,c:"✔ Em perda de qualidade."},
+{q:"Sistema previdenciário é solidário.",r:true,c:"✔ Conceito central."}
+]
+
+};
+
+const informatica = {
+
+basico: [
+{q:"Memória RAM é volátil.",r:true,c:"✔ Perde dados sem energia."},
+{q:"SSD é mais lento que HD.",r:false,c:"❌ SSD é mais rápido."},
+{q:"CPU executa instruções.",r:true,c:"✔ Correto."},
+{q:"Teclado é entrada.",r:true,c:"✔ Correto."},
+{q:"Monitor é entrada.",r:false,c:"❌ É saída."},
+{q:"Mouse é entrada.",r:true,c:"✔ Correto."},
+{q:"Internet é rede mundial.",r:true,c:"✔ Correto."},
+{q:"Download envia arquivo.",r:false,c:"❌ Recebe."},
+{q:"Upload envia arquivo.",r:true,c:"✔ Correto."},
+{q:"HD armazena dados.",r:true,c:"✔ Correto."},
+{q:"Sistema operacional gerencia hardware.",r:true,c:"✔ Correto."},
+{q:"Windows é sistema operacional.",r:true,c:"✔ Correto."},
+{q:"Linux é gratuito em muitos casos.",r:true,c:"✔ Correto."},
+{q:"Pen drive é armazenamento.",r:true,c:"✔ Correto."},
+{q:"Arquivo não pode ser excluído.",r:false,c:"❌ Pode sim."},
+{q:"Backup é desnecessário.",r:false,c:"❌ Essencial."},
+{q:"Antivírus protege sistema.",r:true,c:"✔ Correto."},
+{q:"Firewall protege rede.",r:true,c:"✔ Correto."},
+{q:"Software é físico.",r:false,c:"❌ É lógico."},
+{q:"Hardware é físico.",r:true,c:"✔ Correto."}
+],
+
+intermediario: [
+{q:"Sistema operacional gerencia memória.",r:true,c:"✔ Função central."},
+{q:"Cache é memória lenta.",r:false,c:"❌ É rápida."},
+{q:"SSD não possui partes móveis.",r:true,c:"✔ Correto."},
+{q:"HD usa discos magnéticos.",r:true,c:"✔ Correto."},
+{q:"Processador define desempenho.",r:true,c:"✔ Principal fator."},
+{q:"RAM armazena permanentemente.",r:false,c:"❌ Volátil."},
+{q:"Placa-mãe conecta componentes.",r:true,c:"✔ Correto."},
+{q:"BIOS inicializa sistema.",r:true,c:"✔ Correto."},
+{q:"Sistema pode travar.",r:true,c:"✔ Correto."},
+{q:"Vírus é software malicioso.",r:true,c:"✔ Correto."},
+{q:"Malware não causa dano.",r:false,c:"❌ Pode causar."},
+{q:"Backup pode ser em nuvem.",r:true,c:"✔ Correto."},
+{q:"Nuvem é armazenamento remoto.",r:true,c:"✔ Correto."},
+{q:"IP identifica dispositivo.",r:true,c:"✔ Correto."},
+{q:"Navegador acessa sites.",r:true,c:"✔ Correto."},
+{q:"Email não usa internet.",r:false,c:"❌ Usa sim."},
+{q:"Sistema pode ser atualizado.",r:true,c:"✔ Correto."},
+{q:"Software livre pode ser pago.",r,true,c:"✔ Pode sim."},
+{q:"Arquivos têm extensões.",r:true,c:"✔ Correto."},
+{q:"Rede conecta dispositivos.",r:true,c:"✔ Correto."}
+],
+
+dificil: [
+{q:"Firewall atua como filtro.",r:true,c:"✔ Segurança."},
+{q:"Proxy oculta IP.",r:true,c:"✔ Correto."},
+{q:"HTTPS é seguro.",r:true,c:"✔ Criptografia."},
+{q:"HTTP é seguro.",r:false,c:"❌ Não criptografado."},
+{q:"DNS traduz domínio em IP.",r:true,c:"✔ Correto."},
+{q:"RAM influencia multitarefa.",r:true,c:"✔ Correto."},
+{q:"Processador multi-core melhora desempenho.",r:true,c:"✔ Correto."},
+{q:"SSD fragmenta como HD.",r,false,c:"❌ Não precisa."},
+{q:"Backup incremental copia tudo.",r,false,c:"❌ Só mudanças."},
+{q:"Antivírus substitui firewall.",r,false,c:"❌ Funções diferentes."},
+{q:"Rede LAN é local.",r,true,c:"✔ Correto."},
+{q:"WAN é rede global.",r,true,c:"✔ Correto."},
+{q:"VPN cria conexão segura.",r,true,c:"✔ Correto."},
+{q:"Cookies armazenam dados.",r,true,c:"✔ Correto."},
+{q:"Cache melhora desempenho.",r,true,c:"✔ Correto."},
+{q:"Sistema nunca falha.",r,false,c:"❌ Falhas existem."},
+{q:"Software pode ser open source.",r,true,c:"✔ Correto."},
+{q:"Bug é erro no sistema.",r,true,c:"✔ Correto."},
+{q:"Atualização corrige falhas.",r,true,c:"✔ Correto."},
+{q:"Rede não precisa de protocolo.",r,false,c:"❌ Precisa sim."}
+]
+
+};
+
+const banco = {
+  portugues,
+  previdenciario,
+  informatica
+};
+
+// ================= SISTEMA =================
+
+let listaBase=[],listaAtual=[],atual;
+let acertos=0,erros=0;
+
+function abrirNivel(m){materiaAtual=m;menu.style.display="none";nivel.style.display="block";}
+function iniciar(n){listaBase=[...banco[materiaAtual][n]];preparar();}
 function simulado(){
-  listaBase = [];
-  Object.values(banco).forEach(m => listaBase = listaBase.concat(m));
-  preparar();
+listaBase=[];
+Object.values(banco).forEach(m=>Object.values(m).forEach(n=>listaBase=listaBase.concat(n)));
+preparar();
 }
 
 function preparar(){
-  document.getElementById("menu").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-
-  acertos = 0;
-  erros = 0;
-
-  listaAtual = [...listaBase];
-  embaralhar(listaAtual);
-
-  nova();
+nivel.style.display="none";quiz.style.display="block";
+acertos=0;erros=0;
+listaAtual=[...listaBase];
+embaralhar(listaAtual);
+nova();
 }
 
-function embaralhar(array){
-  for(let i = array.length - 1; i > 0; i--){
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
+function embaralhar(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 
 function nova(){
-
-  if(listaAtual.length === 0){
-    listaAtual = [...listaBase];
-    embaralhar(listaAtual);
-  }
-
-  atual = listaAtual.pop();
-
-  document.getElementById("pergunta").innerText = atual.q;
-  document.getElementById("feedback").innerText = "";
+if(listaAtual.length===0){listaAtual=[...listaBase];embaralhar(listaAtual);}
+atual=listaAtual.pop();
+pergunta.innerText=atual.q;
+feedback.innerText="";
 }
 
-function responder(resp){
-  if(resp === atual.r){
-    acertos++;
-    document.getElementById("feedback").innerText = "✅ Acertou";
-  } else {
-    erros++;
-    document.getElementById("feedback").innerText =
-      "❌ Errou → " + atual.c;
-  }
-
-  atualizar();
-  setTimeout(nova, 2000);
+function responder(r){
+if(r===atual.r){
+acertos++;feedback.innerText="✅ Acertou";atualizar();setTimeout(nova,2000);
+}else{
+erros++;feedback.innerText="❌ "+atual.c;atualizar();setTimeout(nova,15000);
+}
 }
 
-function atualizar(){
-  document.getElementById("placar").innerText =
-    `Acertos: ${acertos} | Erros: ${erros}`;
-}
-
-function voltar(){
-  document.getElementById("menu").classList.remove("hidden");
-  document.getElementById("quiz").classList.add("hidden");
-}
+function atualizar(){placar.innerText=`📊 ${acertos} acertos | ${erros} erros`;}
+function voltarMenu(){menu.style.display="block";nivel.style.display="none";quiz.style.display="none";}
 
 </script>
 
