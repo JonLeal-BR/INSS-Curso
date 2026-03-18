@@ -148,9 +148,52 @@ basico: [
 {q:"Pensão é benefício.",r:true,c:"✔ Correto."},
 {q:"Salário maternidade existe.",r:true,c:"✔ Correto."}
 ],
-intermediario: Array.from({length:20},(_,i)=>({q:`Previdenciário intermediário ${i+1}`,r:true,c:"✔ Revisar lei 8.213."})),
-dificil: Array.from({length:20},(_,i)=>({q:`Previdenciário difícil ${i+1}`,r:false,c:"❌ Tema avançado de prova."}))
-};
+
+intermediario: [
+{q:"O auxílio-reclusão é devido aos dependentes do segurado.",r:true,c:"✔ Não é pago ao preso, mas aos dependentes."},
+{q:"Pensão por morte exige carência mínima.",r:false,c:"❌ Não exige carência."},
+{q:"Período de graça mantém qualidade de segurado.",r:true,c:"✔ Tema clássico de prova."},
+{q:"Segurado facultativo exerce atividade remunerada.",r:false,c:"❌ Não exerce."},
+{q:"INSS integra administração indireta.",r:true,c:"✔ Autarquia federal."},
+{q:"Carência pode ser dispensada em acidente.",r:true,c:"✔ Muito cobrado."},
+{q:"Aposentadoria especial exige exposição a risco.",r:true,c:"✔ Regra base."},
+{q:"Auxílio-doença exige incapacidade total e permanente.",r:false,c:"❌ Pode ser temporária."},
+{q:"Dependentes têm ordem de prioridade.",r:true,c:"✔ Classe 1 exclui as demais."},
+{q:"Filho maior de 21 anos mantém pensão.",r:false,c:"❌ Regra geral perde."},
+{q:"Benefícios podem ser acumulados sem restrição.",r:false,c:"❌ Existem limites."},
+{q:"Segurado especial é trabalhador rural.",r:true,c:"✔ Correto."},
+{q:"INSS não pode revisar benefícios.",r:false,c:"❌ Pode sim."},
+{q:"Carência é contada em meses.",r:true,c:"✔ Regra padrão."},
+{q:"Contribuinte individual é segurado obrigatório.",r:true,c:"✔ Correto."},
+{q:"Reforma da previdência criou idade mínima.",r:true,c:"✔ Tema atual."},
+{q:"Perda da qualidade exige nova carência total.",r:false,c:"❌ Pode ser parcial."},
+{q:"Auxílio-acidente é benefício indenizatório.",r:true,c:"✔ Não substitui renda."},
+{q:"INSS paga benefícios assistenciais.",r:true,c:"✔ Ex: LOAS."},
+{q:"Segurado pode recuperar qualidade.",r:true,c:"✔ Regra de reingresso."}
+],
+
+}
+dificil: [
+{q:"A pensão por morte pode ter valor inferior ao salário mínimo.",r:true,c:"✔ Após reforma, pode ocorrer."},
+{q:"Dependente classe 2 exclui classe 1.",r:false,c:"❌ Classe 1 tem prioridade absoluta."},
+{q:"Carência é exigida para auxílio-acidente.",r:false,c:"❌ Não exige."},
+{q:"Segurado facultativo pode ser dependente.",r:true,c:"✔ Pode acumular papéis."},
+{q:"Sistema previdenciário é contributivo e solidário.",r:true,c:"✔ Conceito chave."},
+{q:"Período de graça é ilimitado.",r:false,c:"❌ Tem prazo."},
+{q:"Aposentadoria especial ignora risco.",r:false,c:"❌ Baseada na exposição."},
+{q:"Revisão de benefício não tem prazo.",r:false,c:"❌ Existe decadência."},
+{q:"Auxílio-doença pode cessar.",r:true,c:"✔ Correto."},
+{q:"Segurado obrigatório pode ser facultativo simultaneamente.",r:false,c:"❌ Não pode."},
+{q:"Contribuição retroativa é livre.",r,false,c:"❌ Depende de regras."},
+{q:"Qualidade de segurado pode ser mantida sem contribuição.",r:true,c:"✔ Período de graça."},
+{q:"Dependente perde direito em algumas condições.",r:true,c:"✔ Ex: casamento."},
+{q:"Carência pode reiniciar após perda da qualidade.",r:true,c:"✔ Tema avançado."},
+{q:"INSS pode cancelar benefício irregular.",r:true,c:"✔ Correto."},
+{q:"Aposentadoria exige apenas idade.",r,false,c:"❌ Depende da regra."},
+{q:"Benefícios nunca podem ser acumulados.",r,false,c:"❌ Há exceções."},
+{q:"Sistema previdenciário não depende de contribuição.",r,false,c:"❌ Base contributiva."},
+{q:"LOAS é benefício previdenciário.",r,false,c:"❌ Assistencial."},
+{q:"Segurado especial contribui sobre produção.",r,true,c:"✔ Correto."}
 
 // ===== INFORMÁTICA =====
 const informatica = {
@@ -176,9 +219,53 @@ basico: [
 {q:"HD armazena dados.",r:true,c:"✔ Correto."},
 {q:"Sistema nunca falha.",r:false,c:"❌ Falha sim."}
 ],
-intermediario: Array.from({length:20},(_,i)=>({q:`Informática intermediário ${i+1}`,r:true,c:"✔ Tema recorrente."})),
-dificil: Array.from({length:20},(_,i)=>({q:`Informática difícil ${i+1}`,r:false,c:"❌ Conceito avançado."}))
-};
+
+}
+intermediario: [
+{q:"Cache é memória de alta velocidade.",r:true,c:"✔ Fica próxima ao processador."},
+{q:"SSD possui partes móveis.",r:false,c:"❌ Não possui."},
+{q:"HD usa tecnologia magnética.",r:true,c:"✔ Correto."},
+{q:"Sistema operacional gerencia recursos.",r:true,c:"✔ Função principal."},
+{q:"BIOS inicia o sistema.",r:true,c:"✔ Correto."},
+{q:"RAM é permanente.",r:false,c:"❌ É volátil."},
+{q:"Placa-mãe conecta componentes.",r:true,c:"✔ Correto."},
+{q:"IP identifica dispositivos.",r:true,c:"✔ Correto."},
+{q:"Backup pode ser feito em nuvem.",r:true,c:"✔ Correto."},
+{q:"Navegador acessa páginas web.",r:true,c:"✔ Correto."},
+{q:"Email funciona sem internet.",r:false,c:"❌ Depende da rede."},
+{q:"Malware pode causar danos.",r,true,c:"✔ Correto."},
+{q:"Software livre não pode ser pago.",r,false,c:"❌ Pode sim."},
+{q:"Sistema pode travar.",r,true,c:"✔ Realidade prática."},
+{q:"Arquivos possuem extensão.",r,true,c:"✔ Correto."},
+{q:"Rede conecta dispositivos.",r,true,c:"✔ Correto."},
+{q:"Atualizações corrigem falhas.",r,true,c:"✔ Correto."},
+{q:"Processador define desempenho.",r,true,c:"✔ Fator chave."},
+{q:"RAM auxilia multitarefa.",r,true,c:"✔ Correto."},
+{q:"Firewall protege sistema.",r,true,c:"✔ Segurança."}
+]
+
+}
+dificil: [
+{q:"HTTPS utiliza criptografia.",r:true,c:"✔ Segurança de dados."},
+{q:"HTTP é protocolo seguro.",r,false,c:"❌ Não criptografado."},
+{q:"DNS traduz domínio em IP.",r,true,c:"✔ Correto."},
+{q:"Proxy pode ocultar IP.",r,true,c:"✔ Correto."},
+{q:"VPN cria túnel seguro.",r,true,c:"✔ Muito cobrado."},
+{q:"Backup incremental copia tudo.",r,false,c:"❌ Só alterações."},
+{q:"SSD sofre fragmentação como HD.",r,false,c:"❌ Não sofre."},
+{q:"Antivírus substitui firewall.",r,false,c:"❌ Funções diferentes."},
+{q:"LAN é rede local.",r,true,c:"✔ Correto."},
+{q:"WAN é rede global.",r,true,c:"✔ Correto."},
+{q:"Cookies armazenam dados.",r,true,c:"✔ Correto."},
+{q:"Cache melhora desempenho.",r,true,c:"✔ Correto."},
+{q:"Sistema nunca apresenta falhas.",r,false,c:"❌ Falhas existem."},
+{q:"Bug é erro no software.",r,true,c:"✔ Correto."},
+{q:"Atualização pode corrigir bugs.",r,true,c:"✔ Correto."},
+{q:"Rede funciona sem protocolo.",r,false,c:"❌ Precisa de protocolos."},
+{q:"Firewall atua como filtro.",r,true,c:"✔ Correto."},
+{q:"Criptografia protege dados.",r,true,c:"✔ Correto."},
+{q:"IP pode ser dinâmico.",r,true,c:"✔ Correto."},
+{q:"Sistema operacional não gerencia processos.",r,false,c:"❌ Gerencia sim."}
 
 const banco = { portugues, previdenciario, informatica };
 
