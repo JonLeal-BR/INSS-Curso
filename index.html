@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>INSS Master App</title>
+<title>INSS Master PRO</title>
 
 <style>
 body {
@@ -27,12 +27,16 @@ button {
 
 .hidden { display: none; }
 
+#feedback {
+  margin-top: 15px;
+  font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>📚 INSS MASTER</h1>
+<h1>📚 INSS MASTER PRO</h1>
 
 <div id="menu" class="menu">
   <h2>Escolha a Matéria</h2>
@@ -61,23 +65,34 @@ button {
 <script>
 
 const banco = {
-  portugues: [
-    {q:"'Houveram problemas' está correto.", r:false},
-    {q:"Crase ocorre antes de palavras femininas.", r:true},
-    {q:"Sujeito simples pode ter mais de um núcleo.", r:false}
-  ],
 
-  previdenciario: [
-    {q:"Previdência exige contribuição.", r:true},
-    {q:"Assistência social é contributiva.", r:false},
-    {q:"Segurado facultativo exerce atividade remunerada.", r:false}
-  ],
+portugues: [
+{q:"A substituição de 'há' por 'faz' mantém o sentido temporal.", r:true, c:"'Há' indica tempo decorrido e pode ser substituído por 'faz'."},
+{q:"'Houveram problemas' está correto.", r:false, c:"O verbo 'haver' no sentido de existir é impessoal e fica no singular."},
+{q:"Crase ocorre antes de palavras masculinas.", r:false, c:"Crase ocorre antes de palavras femininas que admitem artigo 'a'."},
+{q:"Sujeito pode ser oculto.", r:true, c:"O sujeito oculto é identificado pela desinência verbal."},
+{q:"Pontuação não altera sentido.", r:false, c:"Pontuação pode mudar completamente o sentido da frase."},
+{q:"Concordância verbal depende do núcleo do sujeito.", r:true, c:"A regra central da concordância verbal é essa."}
+],
 
-  informatica: [
-    {q:"RAM é memória volátil.", r:true},
-    {q:"SSD é mais lento que HD.", r:false},
-    {q:"Sistema operacional gerencia hardware.", r:true}
-  ]
+previdenciario: [
+{q:"A previdência social exige contribuição.", r:true, c:"A previdência é contributiva e obrigatória para segurados."},
+{q:"Assistência social exige contribuição prévia.", r:false, c:"Assistência é não contributiva."},
+{q:"Saúde é parte da seguridade social.", r:true, c:"Seguridade é composta por saúde, assistência e previdência."},
+{q:"Segurado facultativo exerce atividade remunerada.", r:false, c:"Facultativo não exerce atividade remunerada."},
+{q:"A seguridade é financiada apenas pelo governo.", r:false, c:"Toda a sociedade financia a seguridade."},
+{q:"Empregado é segurado obrigatório.", r:true, c:"Empregado entra automaticamente como segurado."}
+],
+
+informatica: [
+{q:"RAM é volátil.", r:true, c:"Perde dados ao desligar."},
+{q:"SSD é mais lento que HD.", r:false, c:"SSD é mais rápido que HD."},
+{q:"Sistema operacional gerencia hardware.", r:true, c:"Essa é sua função principal."},
+{q:"CPU executa instruções.", r:true, c:"CPU é o cérebro do computador."},
+{q:"Backup é desnecessário.", r:false, c:"Backup é essencial para segurança de dados."},
+{q:"Vírus pode danificar arquivos.", r:true, c:"Malwares podem comprometer o sistema."}
+]
+
 };
 
 let lista = [];
@@ -92,10 +107,7 @@ function iniciar(materia){
 
 function simulado(nivel){
   lista = [];
-
-  Object.values(banco).forEach(m => {
-    lista = lista.concat(m);
-  });
+  Object.values(banco).forEach(m => lista = lista.concat(m));
 
   if(nivel === 2) lista = lista.concat(lista);
   if(nivel === 3) lista = lista.concat(lista, lista);
@@ -125,12 +137,13 @@ function responder(resp){
     document.getElementById("feedback").innerText = "✅ Acertou";
   } else {
     erros++;
-    document.getElementById("feedback").innerText = "❌ Errou";
+    document.getElementById("feedback").innerText =
+      "❌ Errou → " + atual.c;
   }
 
   atualizar();
 
-  setTimeout(nova, 700);
+  setTimeout(nova, 2000);
 }
 
 function atualizar(){
