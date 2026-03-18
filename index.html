@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>INSS Master PRO</title>
+<title>INSS Master App</title>
 
 <style>
 body {
@@ -14,11 +14,11 @@ body {
 }
 
 button {
-  padding: 15px;
-  margin: 10px;
+  padding: 14px;
+  margin: 8px;
   border-radius: 10px;
   border: none;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .menu button { background: #1e293b; color: white; }
@@ -36,7 +36,7 @@ button {
 
 <body>
 
-<h1>📚 INSS MASTER PRO</h1>
+<h1>📚 INSS MASTER</h1>
 
 <div id="menu" class="menu">
   <h2>Escolha a Matéria</h2>
@@ -44,8 +44,8 @@ button {
   <button onclick="iniciar('previdenciario')">Previdenciário</button>
   <button onclick="iniciar('informatica')">Informática</button>
 
-  <h2>Simulado</h2>
-  <button onclick="simulado()">🎯 Simular Prova</button>
+  <h2>Simulado Geral</h2>
+  <button onclick="simulado()">🎯 Iniciar Simulado</button>
 </div>
 
 <div id="quiz" class="hidden">
@@ -62,50 +62,98 @@ button {
 
 <script>
 
+// ================= BANCO DE QUESTÕES =================
+
 const banco = {
-  portugues: [...Array(20)].map((_,i)=>({
-    q:`Português - Questão ${i+1}`,
-    r: i%2===0,
-    c:"Comentário explicativo da questão."
-  })),
 
-  previdenciario: [...Array(20)].map((_,i)=>({
-    q:`Previdenciário - Questão ${i+1}`,
-    r: i%2!==0,
-    c:"Comentário explicativo da questão."
-  })),
+portugues: [
+{q:"O uso de 'há' pode indicar tempo decorrido.", r:true, c:"Correto. 'Há' indica tempo passado e pode ser substituído por 'faz'."},
+{q:"A crase ocorre antes de palavras masculinas.", r:false, c:"Errado. A crase ocorre antes de palavras femininas que admitem artigo 'a'."},
+{q:"O sujeito pode ser indeterminado.", r:true, c:"Correto. O sujeito indeterminado ocorre quando não se identifica o agente da ação."},
+{q:"Pontuação não altera o sentido da frase.", r:false, c:"Errado. A pontuação pode alterar completamente o sentido."},
+{q:"Verbo 'haver' no sentido de existir vai para o plural.", r:false, c:"Errado. Ele é impessoal e fica no singular."},
+{q:"Predicado verbal indica ação.", r:true, c:"Correto. O núcleo é um verbo significativo."},
+{q:"Adjunto adverbial é essencial.", r:false, c:"Errado. É termo acessório."},
+{q:"Sujeito composto possui mais de um núcleo.", r:true, c:"Correto."},
+{q:"Crase pode ocorrer antes de verbo.", r:false, c:"Errado. Nunca ocorre antes de verbo."},
+{q:"Pronome substitui o nome.", r:true, c:"Correto."},
+{q:"Advérbio modifica verbo.", r:true, c:"Correto."},
+{q:"Interjeição possui função sintática.", r:false, c:"Errado. Não exerce função sintática."},
+{q:"Regência verbal trata da relação entre verbo e complemento.", r:true, c:"Correto."},
+{q:"Objeto direto exige preposição obrigatória.", r:false, c:"Errado."},
+{q:"Concordância verbal depende do sujeito.", r:true, c:"Correto."},
+{q:"Verbo de ligação indica estado.", r:true, c:"Correto."},
+{q:"Artigo define o substantivo.", r:true, c:"Correto."},
+{q:"Substantivo nomeia seres.", r:true, c:"Correto."},
+{q:"Locução verbal tem apenas um verbo.", r:false, c:"Errado. Possui dois ou mais."},
+{q:"Predicado nominal indica estado.", r:true, c:"Correto."}
+],
 
-  informatica: [...Array(20)].map((_,i)=>({
-    q:`Informática - Questão ${i+1}`,
-    r: i%2===0,
-    c:"Comentário explicativo da questão."
-  }))
+previdenciario: [
+{q:"A previdência social exige contribuição.", r:true, c:"Correto. É contributiva."},
+{q:"Assistência social exige contribuição.", r:false, c:"Errado. É não contributiva."},
+{q:"Saúde integra a seguridade social.", r:true, c:"Correto."},
+{q:"Segurado facultativo exerce atividade remunerada.", r:false, c:"Errado."},
+{q:"Empregado é segurado obrigatório.", r:true, c:"Correto."},
+{q:"A seguridade é financiada por toda a sociedade.", r:true, c:"Correto."},
+{q:"LOAS exige contribuição prévia.", r:false, c:"Errado."},
+{q:"Aposentadoria é benefício previdenciário.", r:true, c:"Correto."},
+{q:"Auxílio-doença é permanente.", r:false, c:"Errado."},
+{q:"Salário-maternidade é benefício.", r:true, c:"Correto."},
+{q:"Carência é número mínimo de contribuições.", r:true, c:"Correto."},
+{q:"Dependentes não recebem benefícios.", r:false, c:"Errado."},
+{q:"INSS paga benefícios.", r:true, c:"Correto."},
+{q:"Segurado especial contribui mensalmente.", r:false, c:"Errado."},
+{q:"Tempo de contribuição não importa.", r:false, c:"Errado."},
+{q:"Reforma trouxe idade mínima.", r:true, c:"Correto."},
+{q:"Contribuinte individual contribui obrigatoriamente.", r:true, c:"Correto."},
+{q:"Pensão por morte é benefício.", r:true, c:"Correto."},
+{q:"Seguridade é apenas previdência.", r:false, c:"Errado."},
+{q:"INSS é autarquia federal.", r:true, c:"Correto."}
+],
+
+informatica: [
+{q:"Memória RAM é volátil.", r:true, c:"Correto."},
+{q:"SSD é mais lento que HD.", r:false, c:"Errado."},
+{q:"CPU executa instruções.", r:true, c:"Correto."},
+{q:"Sistema operacional gerencia hardware.", r:true, c:"Correto."},
+{q:"Backup é desnecessário.", r:false, c:"Errado."},
+{q:"Vírus pode danificar arquivos.", r:true, c:"Correto."},
+{q:"Monitor é dispositivo de entrada.", r:false, c:"Errado."},
+{q:"Teclado é dispositivo de entrada.", r:true, c:"Correto."},
+{q:"Firewall protege sistema.", r:true, c:"Correto."},
+{q:"Antivírus remove malware.", r:true, c:"Correto."},
+{q:"Download envia arquivo.", r:false, c:"Errado."},
+{q:"Upload envia arquivo.", r:true, c:"Correto."},
+{q:"Internet é rede mundial.", r:true, c:"Correto."},
+{q:"Linux é pago obrigatoriamente.", r:false, c:"Errado."},
+{q:"Pen drive é armazenamento.", r:true, c:"Correto."},
+{q:"HD é mais rápido que SSD.", r:false, c:"Errado."},
+{q:"Nuvem é armazenamento remoto.", r:true, c:"Correto."},
+{q:"Mouse é entrada.", r:true, c:"Correto."},
+{q:"Arquivo não pode ser excluído.", r:false, c:"Errado."},
+{q:"Sistema pode ter falhas.", r:true, c:"Correto."}
+]
+
 };
 
-let lista = [];
-let ordem = [];
-let indice = 0;
-let errosLista = [];
+// ================= LÓGICA =================
 
+let listaBase = [];
+let listaAtual = [];
 let atual;
+
 let acertos = 0;
 let erros = 0;
 
-function embaralhar(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
 function iniciar(materia){
-  lista = banco[materia];
+  listaBase = [...banco[materia]];
   preparar();
 }
 
 function simulado(){
-  lista = [];
-  Object.values(banco).forEach(m => lista = lista.concat(m));
+  listaBase = [];
+  Object.values(banco).forEach(m => listaBase = listaBase.concat(m));
   preparar();
 }
 
@@ -115,27 +163,28 @@ function preparar(){
 
   acertos = 0;
   erros = 0;
-  errosLista = [];
 
-  ordem = [...Array(lista.length).keys()];
-  embaralhar(ordem);
-
-  indice = 0;
+  listaAtual = [...listaBase];
+  embaralhar(listaAtual);
 
   nova();
 }
 
+function embaralhar(array){
+  for(let i = array.length - 1; i > 0; i--){
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 function nova(){
 
-  if(indice >= ordem.length){
-    // ciclo completo
-    ordem = [...Array(lista.length).keys()];
-    embaralhar(ordem);
-    indice = 0;
+  if(listaAtual.length === 0){
+    listaAtual = [...listaBase];
+    embaralhar(listaAtual);
   }
 
-  atual = lista[ordem[indice]];
-  indice++;
+  atual = listaAtual.pop();
 
   document.getElementById("pergunta").innerText = atual.q;
   document.getElementById("feedback").innerText = "";
@@ -147,14 +196,11 @@ function responder(resp){
     document.getElementById("feedback").innerText = "✅ Acertou";
   } else {
     erros++;
-    errosLista.push(atual);
-
     document.getElementById("feedback").innerText =
       "❌ Errou → " + atual.c;
   }
 
   atualizar();
-
   setTimeout(nova, 2000);
 }
 
