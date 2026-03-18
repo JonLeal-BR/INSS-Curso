@@ -45,9 +45,7 @@ button {
   <button onclick="iniciar('informatica')">Informática</button>
 
   <h2>Simulado</h2>
-  <button onclick="simulado(1)">🟢 Iniciante</button>
-  <button onclick="simulado(2)">🟡 Intermediário</button>
-  <button onclick="simulado(3)">🔴 Expert</button>
+  <button onclick="simulado()">🎯 Simular Prova</button>
 </div>
 
 <div id="quiz" class="hidden">
@@ -65,80 +63,30 @@ button {
 <script>
 
 const banco = {
+  portugues: [...Array(20)].map((_,i)=>({
+    q:`Português - Questão ${i+1}`,
+    r: i%2===0,
+    c:"Comentário explicativo da questão."
+  })),
 
-portugues: [
-{q:"'Há anos estudo' indica tempo passado.", r:true, c:"'Há' indica tempo decorrido."},
-{q:"'Faz anos estudo' está correto.", r:true, c:"'Faz' também pode indicar tempo."},
-{q:"'Houveram problemas' está correto.", r:false, c:"Verbo haver no sentido de existir é singular."},
-{q:"Crase ocorre antes de palavra masculina.", r:false, c:"Só ocorre antes de palavra feminina."},
-{q:"Sujeito oculto pode ser identificado.", r:true, c:"Pela desinência verbal."},
-{q:"Pontuação não altera sentido.", r:false, c:"Altera sim."},
-{q:"Concordância depende do sujeito.", r:true, c:"Regra central."},
-{q:"Objeto direto tem preposição obrigatória.", r:false, c:"Não necessariamente."},
-{q:"Adjunto adverbial é essencial.", r:false, c:"É acessório."},
-{q:"Predicado verbal indica ação.", r:true, c:"Característica dele."},
-{q:"Verbo de ligação indica estado.", r:true, c:"Ex: ser, estar."},
-{q:"Crase pode ocorrer antes de verbo.", r:false, c:"Nunca ocorre antes de verbo."},
-{q:"Sujeito composto tem mais de um núcleo.", r:true, c:"Definição correta."},
-{q:"Regência verbal trata de concordância.", r:false, c:"Trata de relação com complementos."},
-{q:"Voz passiva indica que sujeito sofre ação.", r:true, c:"Exatamente isso."},
-{q:"Interjeição tem função sintática.", r:false, c:"Não possui função sintática."},
-{q:"Pronome substitui o nome.", r:true, c:"Função principal."},
-{q:"Advérbio modifica verbo.", r:true, c:"E também adjetivo e advérbio."},
-{q:"Substantivo nomeia seres.", r:true, c:"Definição."},
-{q:"Artigo define substantivo.", r:true, c:"Função dele."}
-],
+  previdenciario: [...Array(20)].map((_,i)=>({
+    q:`Previdenciário - Questão ${i+1}`,
+    r: i%2!==0,
+    c:"Comentário explicativo da questão."
+  })),
 
-previdenciario: [
-{q:"Previdência exige contribuição.", r:true, c:"Sistema contributivo."},
-{q:"Assistência é contributiva.", r:false, c:"É não contributiva."},
-{q:"Saúde faz parte da seguridade.", r:true, c:"Composição clássica."},
-{q:"Segurado facultativo trabalha.", r:false, c:"Não exerce atividade remunerada."},
-{q:"Empregado é obrigatório.", r:true, c:"Sim."},
-{q:"INSS faz parte da seguridade.", r:true, c:"Autarquia federal."},
-{q:"Seguridade é só do governo.", r:false, c:"Toda sociedade financia."},
-{q:"Benefício depende de carência.", r:true, c:"Regra geral."},
-{q:"Aposentadoria é benefício.", r:true, c:"Sim."},
-{q:"Pensão por morte exige contribuição.", r:true, c:"Segurado deve ter qualidade."},
-{q:"Auxílio-doença é permanente.", r:false, c:"É temporário."},
-{q:"Salário-maternidade é benefício.", r:true, c:"Sim."},
-{q:"Contribuinte individual contribui.", r:true, c:"Obrigatoriamente."},
-{q:"Segurado especial paga mensalmente.", r:false, c:"Regime diferenciado."},
-{q:"Carência é tempo de contribuição.", r:true, c:"Número mínimo de contribuições."},
-{q:"Dependente não recebe benefício.", r:false, c:"Recebe sim."},
-{q:"LOAS exige contribuição.", r:false, c:"Não exige."},
-{q:"Idade mínima é regra.", r:true, c:"Após reforma."},
-{q:"Tempo de contribuição não importa.", r:false, c:"Importa sim."},
-{q:"INSS paga benefícios.", r:true, c:"Função principal."}
-],
-
-informatica: [
-{q:"RAM é volátil.", r:true, c:"Perde dados."},
-{q:"SSD é mais lento.", r:false, c:"Mais rápido."},
-{q:"CPU executa instruções.", r:true, c:"Correto."},
-{q:"Sistema operacional gerencia hardware.", r:true, c:"Função principal."},
-{q:"Backup é desnecessário.", r:false, c:"Essencial."},
-{q:"Vírus não afeta arquivos.", r:false, c:"Afeta sim."},
-{q:"HD é mais lento que SSD.", r:true, c:"Correto."},
-{q:"Mouse é dispositivo de saída.", r:false, c:"É de entrada."},
-{q:"Monitor é saída.", r:true, c:"Exibe dados."},
-{q:"Teclado é entrada.", r:true, c:"Correto."},
-{q:"Nuvem é armazenamento.", r:true, c:"Sim."},
-{q:"Windows é sistema operacional.", r:true, c:"Sim."},
-{q:"Linux é pago.", r:false, c:"Geralmente gratuito."},
-{q:"Internet é rede mundial.", r:true, c:"Definição."},
-{q:"Firewall protege sistema.", r:true, c:"Sim."},
-{q:"Antivírus remove malware.", r:true, c:"Função."},
-{q:"Arquivo não pode ser excluído.", r:false, c:"Pode sim."},
-{q:"Pen drive é armazenamento.", r:true, c:"Sim."},
-{q:"Download envia arquivo.", r:false, c:"Baixa arquivo."},
-{q:"Upload envia arquivo.", r:true, c:"Correto."}
-]
-
+  informatica: [...Array(20)].map((_,i)=>({
+    q:`Informática - Questão ${i+1}`,
+    r: i%2===0,
+    c:"Comentário explicativo da questão."
+  }))
 };
 
 let lista = [];
-let fila = [];
+let ordem = [];
+let indice = 0;
+let errosLista = [];
+
 let atual;
 let acertos = 0;
 let erros = 0;
@@ -152,39 +100,42 @@ function embaralhar(array) {
 
 function iniciar(materia){
   lista = banco[materia];
-  start();
+  preparar();
 }
 
-function simulado(nivel){
+function simulado(){
   lista = [];
   Object.values(banco).forEach(m => lista = lista.concat(m));
-
-  if(nivel === 2) lista = lista.concat(lista);
-  if(nivel === 3) lista = lista.concat(lista, lista);
-
-  start();
+  preparar();
 }
 
-function start(){
+function preparar(){
   document.getElementById("menu").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
 
   acertos = 0;
   erros = 0;
+  errosLista = [];
 
-  fila = [...lista];
-  embaralhar(fila);
+  ordem = [...Array(lista.length).keys()];
+  embaralhar(ordem);
+
+  indice = 0;
 
   nova();
 }
 
 function nova(){
-  if(fila.length === 0){
-    fila = [...lista];
-    embaralhar(fila);
+
+  if(indice >= ordem.length){
+    // ciclo completo
+    ordem = [...Array(lista.length).keys()];
+    embaralhar(ordem);
+    indice = 0;
   }
 
-  atual = fila.pop();
+  atual = lista[ordem[indice]];
+  indice++;
 
   document.getElementById("pergunta").innerText = atual.q;
   document.getElementById("feedback").innerText = "";
@@ -196,6 +147,8 @@ function responder(resp){
     document.getElementById("feedback").innerText = "✅ Acertou";
   } else {
     erros++;
+    errosLista.push(atual);
+
     document.getElementById("feedback").innerText =
       "❌ Errou → " + atual.c;
   }
